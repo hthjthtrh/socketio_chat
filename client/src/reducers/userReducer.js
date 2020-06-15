@@ -1,6 +1,7 @@
 const {LOGIN} = require('../actions/ActionTypes')
 
-const userReducer = (state = null, action) => {
+export default function(state = null, action) {
+
     switch (action.type) {
         case LOGIN:
             return action.payload.user    
@@ -9,5 +10,3 @@ const userReducer = (state = null, action) => {
             return state
     }
 }
-
-export default userReducer

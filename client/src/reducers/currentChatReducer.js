@@ -1,6 +1,7 @@
 const {JOIN_CHAT} = require('../actions/ActionTypes')
 
-const currentChatReducer = (state = null, action) => {
+export default function(state = null, action) {
+
     switch (action.type) {
         case JOIN_CHAT:
             return action.payload.chat    
@@ -9,5 +10,3 @@ const currentChatReducer = (state = null, action) => {
             return state
     }
 }
-
-export default currentChatReducer

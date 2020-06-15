@@ -1,6 +1,7 @@
 const {RECEIVE_MESSAGE, SEND_MESSAGE} = require('../actions/ActionTypes')
 
-const messagesReducer = (state = {},action) => {
+export default function(state = {},action) {
+
     switch (action.type) {
         case RECEIVE_MESSAGE:
             var messageCopy = Object.assign({},state)
@@ -16,5 +17,3 @@ const messagesReducer = (state = {},action) => {
             return state
     }
 }
-
-export default messagesReducer
