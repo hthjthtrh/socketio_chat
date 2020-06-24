@@ -1,9 +1,11 @@
 import * as Types from './ActionTypes'
 import * as Status from '../utils/constants'
+import socket from '../socket'
 
-export const login = userName => (dispatch, getState) => {
-    const {socket} = getState()
-    socket.emit('login', {userName}, status => {
+export const login = userName => dispatch => {
+    console.log(userName);
+
+    socket.emit('login', { userName }, status => {
         switch (status) {
             case Status.SUCCESS:
                 dispatch({
@@ -20,26 +22,26 @@ export const login = userName => (dispatch, getState) => {
 }
 
 export const joinChat = chat => (dispatch, getState) => {
-    const {socket, currentChat, chatRooms} = getState()
+    const { currentChat, chatRooms } = getState()
     // no state changes
-    if (chat === currentChat){
+    if (chat.localeCompare(currentChat) === 0) {
         return
     }
 
     const chatActionTemplate = (type, chat) => ({
         type,
         payload: {
-            chat
+            room: chat
         }
     })
+    console.log(chatRooms, chat, chatRooms.includes(chat));
 
-    if (!(chat in chatRooms)){
-        socket.emit('join room', chat, (status) => {
+    if (!(chatRooms.includes(chat))) {
+        socket.emit('join room', chat, status => {
             switch (status) {
                 case Status.SUCCESS:
-                    dispatch(chatActionTemplate(Types.NEW_CHAT,chat))
-                    
-                    dispatch(chatActionTemplate(Types.JOIN_CHAT,chat))
+                    dispatch(chatActionTemplate(Types.NEW_CHAT, chat))
+                    dispatch(chatActionTemplate(Types.JOIN_CHAT, chat))
                     break
 
                 default:
@@ -47,38 +49,26 @@ export const joinChat = chat => (dispatch, getState) => {
             }
         })
     } else {
-        dispatch(chatActionTemplate(Types.JOIN_CHAT,chat))
+        dispatch(chatActionTemplate(Types.JOIN_CHAT, chat))
     }
 }
 
-export const sendMessage = msg => (dispatch,getState) => {
-    const {socket, currentChat} = getState()
-    socket.emit('message', msg, () => {
+export const sendMessage = msg => (dispatch, getState) => {
+    const { user, currentChat } = getState()
+    const msgBody = {
+        origin: user,
+        room: currentChat,
+        time: Date.now(),
+        payload: msg
+    }
+    socket.emit('message', msgBody, () => {
         dispatch({
             type: Types.SEND_MESSAGE,
             payload: {
                 chat: currentChat,
-                message: msg
+                message: msgBody
             }
         })
-    })
-}
-
-export const receiveMessage = msg => (dispatch, getState) => {
-    const {currentChat} = getState()
-    dispatch({
-        type: Types.RECEIVE_MESSAGE,
-        payload: {
-            chat: currentChat,
-            message: msg
-        }
-    })
-}
-
-export const populateHistory = history => (dispatch, getState) => {
-    dispatch({
-        type: Types.POPULATE_HISTORY,
-        payload: history
     })
 }
 

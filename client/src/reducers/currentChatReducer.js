@@ -4,7 +4,7 @@ export default function(state = null, action) {
 
     switch (action.type) {
         case JOIN_CHAT:
-            return action.payload.chat    
+            return action.payload.room    
 
         default:
             return state

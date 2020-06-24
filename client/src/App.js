@@ -1,21 +1,80 @@
 import React from 'react';
 import './App.css';
-import {connect} from 'react-redux'
+import { useSelector } from 'react-redux';
+import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
+import { makeStyles } from '@material-ui/core/styles';
+import clsx from 'clsx';
 
-class App extends React.Component{
+import ChatRoomForm from './components/ChatRoomForm';
+import ChatRoomList from './components/ChatRoomList';
+import ChatRoomPanel from './components/ChatRoomPanel';
+import LoginPanel from './components/LoginPanel.js'
+import { FormHelperText } from '@material-ui/core';
 
-  componentDidMount() {
-    console.log(this.props)
+const useStyles = makeStyles((theme) => ({
+  root: {
+    padding: theme.spacing(1)
+  },
+  paper: {
+    textAlign: 'center',
+    color: theme.palette.text.secondary,
+    padding: theme.spacing(1),
+  },
+  paper1: {
+    height: '35px'
+  },
+  paper2: {
+    height: '400px',
+    overflow: 'auto'
+  },
+  paper3: {
+    height: 'auto'
+  },
+  loginPanelContainer: {
+    display: 'flex',
+    padding: theme.spacing(1),
+    alignItems: 'center',
+    justifyContent: 'center'
   }
-  
-  render() {
-    return (
-      <div className="App">
-        <p>Hi</p>
-      </div>
-    )
-  }
-}
+}));
 
 
-export default connect(state => ({state}))(App);
+export default function App() {
+  const classes = useStyles();
+  const loggedIn = useSelector(state => !(state.user === null));
+  console.log('logged in: ' + loggedIn);
+
+  return (
+    <div>
+      <Paper style={{ margin: '50px', padding: '20px' }}>
+        <Grid className={classes.root} container justify='center'>
+          <Grid item xs={11}>
+            <Paper className={classes.loginPanelContainer} variant='outlined'>
+              {loggedIn
+                ? 'Place holder'
+                : <LoginPanel />}
+            </Paper>
+          </Grid>
+          <Grid item container direction='column' item xs={3}>
+            <Grid item background='black'>
+              <Paper variant='outlined' className={clsx(classes.paper, classes.paper1)}>
+                <ChatRoomForm disabled={!loggedIn} />
+              </Paper>
+            </Grid>
+            <Grid item background='black'>
+              <Paper variant='outlined' className={clsx(classes.paper, classes.paper2)}>
+                <ChatRoomList />
+              </Paper>
+            </Grid>
+          </Grid>
+          <Grid item xs={8}>
+            <Paper variant='outlined' className={clsx(classes.paper, classes.paper3)}>
+              <ChatRoomPanel />
+            </Paper>
+          </Grid>
+        </Grid>
+      </Paper>
+    </div>
+  );
+};
