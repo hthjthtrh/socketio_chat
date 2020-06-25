@@ -9,8 +9,6 @@ export default function ChatRoomList() {
     const state = useSelector(state => ({chatRooms:state.chatRooms, currentChat:state.currentChat}));
     const dispatch = useDispatch();
 
-    console.log(state);
-
     const handleChatSelection = e => {
         dispatch(joinChat(e.target.getAttribute('value')));
     };
@@ -19,7 +17,7 @@ export default function ChatRoomList() {
         <RoomElement
             key={room} 
             value={room} 
-            selected={state.currentChat === room}
+            selected={(state.currentChat.localeCompare(room) === 0)}
         />
     ));
 

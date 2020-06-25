@@ -5,9 +5,18 @@ import {useDispatch} from 'react-redux'
 
 import { joinChat } from '../actions/actions';
 
+const useStyles = makeStyles({
+    root: {
+        position: 'inherit',
+        top: '50%',
+        left: '50%'
+    }
+})
+
 export default function ChatRoomForm(props) {
     const [chatRoom, setChatRoom] = useState('')
     const dispatch = useDispatch()
+    const classes = useStyles()
 
     const handleKeyDown = event => {
         if (event.key === 'Enter'){

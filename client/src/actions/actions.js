@@ -3,7 +3,6 @@ import * as Status from '../utils/constants'
 import socket from '../socket'
 
 export const login = userName => dispatch => {
-    console.log(userName);
 
     socket.emit('login', { userName }, status => {
         switch (status) {
@@ -14,6 +13,8 @@ export const login = userName => dispatch => {
                         user: userName
                     }
                 })
+                //console.log('getting history')
+                socket.emit('get history');
                 break;
             default:
                 break;
@@ -23,7 +24,11 @@ export const login = userName => dispatch => {
 
 export const joinChat = chat => (dispatch, getState) => {
     const { currentChat, chatRooms } = getState()
-    // no state changes
+    // weird bug of clicking too fast will generate a 'null' chat
+    if (chat == null) {
+        return
+    }
+    // no state change
     if (chat.localeCompare(currentChat) === 0) {
         return
     }
@@ -34,7 +39,6 @@ export const joinChat = chat => (dispatch, getState) => {
             room: chat
         }
     })
-    console.log(chatRooms, chat, chatRooms.includes(chat));
 
     if (!(chatRooms.includes(chat))) {
         socket.emit('join room', chat, status => {
@@ -59,16 +63,15 @@ export const sendMessage = msg => (dispatch, getState) => {
         origin: user,
         room: currentChat,
         time: Date.now(),
-        payload: msg
+        payload: {
+            _metaData: null,
+            data: msg
+        }
     }
-    socket.emit('message', msgBody, () => {
-        dispatch({
-            type: Types.SEND_MESSAGE,
-            payload: {
-                chat: currentChat,
-                message: msgBody
-            }
-        })
+    socket.emit('message', msgBody)
+    dispatch({
+        type: Types.SEND_MESSAGE,
+        payload: msgBody
     })
 }
 

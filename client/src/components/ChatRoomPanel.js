@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { makeStyles, ThemeProvider } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
@@ -27,14 +27,14 @@ export default function ChatRoomPanel(props) {
 
     return (
         <Grid container justify='space-evenly' direction='column' className={classes.root}>
-            <Grid container  item >
-                <Paper style={{height: '400px'}} className={classes.paper} variant='outlined'>
+            <Grid container item >
+                <Paper style={{ height: '600px', overflow: 'auto'}} className={classes.paper} variant='outlined'>
                     <ChatMessagesPanel />
                 </Paper>
             </Grid>
-            <Grid container  item >
+            <Grid container item >
                 <Paper className={classes.paper} variant='outlined'>
-                    <MessageInput />
+                    <MessageInput disabled={props.disabled}/>
                 </Paper>
             </Grid>
         </Grid>

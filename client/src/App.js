@@ -10,7 +10,7 @@ import ChatRoomForm from './components/ChatRoomForm';
 import ChatRoomList from './components/ChatRoomList';
 import ChatRoomPanel from './components/ChatRoomPanel';
 import LoginPanel from './components/LoginPanel.js'
-import { FormHelperText } from '@material-ui/core';
+import UserInfoPanel from './components/UserInfoPanel'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -22,10 +22,10 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(1),
   },
   paper1: {
-    height: '35px'
+    height: '30px'
   },
   paper2: {
-    height: '400px',
+    height: '600px',
     overflow: 'auto'
   },
   paper3: {
@@ -43,7 +43,6 @@ const useStyles = makeStyles((theme) => ({
 export default function App() {
   const classes = useStyles();
   const loggedIn = useSelector(state => !(state.user === null));
-  console.log('logged in: ' + loggedIn);
 
   return (
     <div>
@@ -52,7 +51,7 @@ export default function App() {
           <Grid item xs={11}>
             <Paper className={classes.loginPanelContainer} variant='outlined'>
               {loggedIn
-                ? 'Place holder'
+                ? <UserInfoPanel />
                 : <LoginPanel />}
             </Paper>
           </Grid>
@@ -70,7 +69,7 @@ export default function App() {
           </Grid>
           <Grid item xs={8}>
             <Paper variant='outlined' className={clsx(classes.paper, classes.paper3)}>
-              <ChatRoomPanel />
+              <ChatRoomPanel disabled={!loggedIn}/>
             </Paper>
           </Grid>
         </Grid>

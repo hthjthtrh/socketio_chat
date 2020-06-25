@@ -25,7 +25,7 @@ const roomExists = async room => {
     const options = {}
     try {
         const result = await storage.retrieveDocuments('rooms', criterias, options)
-        return (result === null) ? false : true
+        return (result.length === 0) ? false : true
     } catch (err) {
         console.error(err)
     }
@@ -50,7 +50,7 @@ io.on('connection', socket => {
         activeUsers.add(uid)
         console.log(`User ${uid} is on ${socket.id}.`)
 
-        const rooms = await getRoomsForUser(uid)
+        const rooms = (await getRoomsForUser(uid)).map(roomObj => roomObj.room)
         socket.join(rooms, () => {
             let chainedIo = io
             chainedIo = rooms.reduce((accumulatedIo, room) => accumulatedIo.to(room), chainedIo)
@@ -63,16 +63,18 @@ io.on('connection', socket => {
         const rooms = await getRoomsForUser(uid)
 
         rooms.forEach(room => {
-            const criterias = { room }
+            const criterias = { ...room }
             const options = { projection: { _id: 0 }, sort: { time: 1 } }
             storage.retrieveDocuments('messages', criterias, options).then(messages => {
-                socket.emit('history', { room, messages })
+                console.log(messages);
+                socket.emit('history', { ...room, messages })
             }).catch(err => console.err(err))
         })
     })
 
     socket.on('join room', async (room, ack) => {
         const uid = SidToUid[socket.id]
+        //const roomExist = await roomExists(room);
         if (await roomExists(room)) {
             const criterias = { room }
             const update = { $addToSet: { parties: uid } }
@@ -85,14 +87,16 @@ io.on('connection', socket => {
         } else {
             createRoom(uid, room)
         }
+        socket.join(room)
         ack('okay')
     })
 
     socket.on('message', msg => {
         const uid = SidToUid[socket.id]
         msg.origin = uid
+        console.log(msg);
         storage.insertDocuments('messages', [msg])
-        socket.to(msg.room).emit(msg)
+        socket.to(msg.room).emit('message', msg)
     })
 
     socket.on('disconnect', reason => {

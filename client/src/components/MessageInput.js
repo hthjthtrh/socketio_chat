@@ -6,9 +6,12 @@ import IconButton from '@material-ui/core/IconButton';
 import SendIcon from '@material-ui/icons/Send';
 import { Grid } from '@material-ui/core';
 
+import { sendMessage } from '../actions/actions';
+
 const useStyles= makeStyles( theme => ({
     textField: {
         width: '100%',
+        margin: theme.spacing(0,1)
     }
 }));
 
@@ -19,6 +22,7 @@ export default function MessageInput(props) {
 
     const handleSendMessage = () => {
         console.log(message);
+        dispatch(sendMessage(message));
         setMessage('');
     }
 
@@ -34,6 +38,7 @@ export default function MessageInput(props) {
                         placeholder='Type your message here' 
                         onChange={e => setMessage(e.target.value)} 
                         value={message} 
+                        disabled={props.disabled}
                     />
                 </Grid>
                 <Grid item xs={1}>
