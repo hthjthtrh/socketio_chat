@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
   },
   paper2: {
     height: '600px',
-    overflow: 'auto'
+    overflowY: 'auto',
   },
   paper3: {
     height: 'auto'
@@ -55,13 +55,13 @@ export default function App() {
                 : <LoginPanel />}
             </Paper>
           </Grid>
-          <Grid item container direction='column' item xs={3}>
+          <Grid item container direction='column' xs={3}>
             <Grid item background='black'>
               <Paper variant='outlined' className={clsx(classes.paper, classes.paper1)}>
                 <ChatRoomForm disabled={!loggedIn} />
               </Paper>
             </Grid>
-            <Grid item background='black'>
+            <Grid item background='black' style={{width:'inherit'}}>
               <Paper variant='outlined' className={clsx(classes.paper, classes.paper2)}>
                 <ChatRoomList />
               </Paper>

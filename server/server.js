@@ -66,7 +66,6 @@ io.on('connection', socket => {
             const criterias = { ...room }
             const options = { projection: { _id: 0 }, sort: { time: 1 } }
             storage.retrieveDocuments('messages', criterias, options).then(messages => {
-                console.log(messages);
                 socket.emit('history', { ...room, messages })
             }).catch(err => console.err(err))
         })

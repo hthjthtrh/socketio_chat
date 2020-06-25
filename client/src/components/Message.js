@@ -1,31 +1,59 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Paper, Typography } from '@material-ui/core';
+import { Paper, Typography, Grid } from '@material-ui/core';
+import clsx from 'clsx';
 
 const useStyles = makeStyles(theme => ({
     root: {
         padding: theme.spacing(1)
     },
     textBox: {
-        textAlign: 'start',
-        fontFamily: 'inherit',
-        margin: 0
+        margin: 0,
+        whiteSpace: 'pre-line',
+        overflowWrap: 'break-word',
+        width: 'inherit'
+    },
+    leftBox: {
+        textAlign: 'start'
+    },
+    rightBox: {
+        textAlign: 'end'
     }
 }))
 
 
-export default function Message({rawMsg}) {
-    const {origin, time, payload} = rawMsg;
-    const {_metaData, data} = payload;
+const captionElement = content => {
+    return (
+        <Typography variant='caption' >
+            {content}
+        </Typography>
+    )
+}
+
+export default function Message({ rawMsg, left }) {
+    const { origin, time, payload } = rawMsg;
+    const { data } = payload;
     const classes = useStyles();
-    
+
+    var readableTime = new Date(time);
+    readableTime = `${('0'+readableTime.getHours()).slice(-2)}:${('0'+readableTime.getMinutes()).slice(-2)}`;
+
     return (
         <Paper className={classes.root}>
-            <Typography variant='body1'>
-                <pre className={classes.textBox}>
-                    {data}
-                </pre>                
-            </Typography>
+            <Grid container direction='column' >
+                {left && <Grid item className={clsx(classes.textBox, classes.leftBox)}>
+                    {captionElement(origin)}
+                </Grid>}
+                <Grid item className={clsx(classes.textBox, classes.leftBox)}>
+                    <Typography variant='body1' >
+                        {data}
+                    </Typography>
+                </Grid>
+                <Grid item className={clsx(classes.textBox, classes.rightBox)}>
+                    {captionElement(readableTime)}
+                </Grid>
+                
+            </Grid>
         </Paper>
     );
 }
