@@ -40,7 +40,9 @@ export const joinChat = chat => (dispatch, getState) => {
         }
     })
 
-    if (!(chatRooms.includes(chat))) {
+    var rooms = chatRooms.map(room => room.room)
+
+    if (!(rooms.includes(chat))) {
         socket.emit('join room', chat, status => {
             switch (status) {
                 case Status.SUCCESS:

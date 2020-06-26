@@ -7,11 +7,12 @@ import RoomElement from './RoomElement';
 export default function ChatRoomList() {
     const state = useSelector(state => ({chatRooms:state.chatRooms, currentChat:state.currentChat}));
 
-    const roomElements = state.chatRooms.map(room => (
+    const roomElements = state.chatRooms.map(roomObj => (
         <RoomElement
-            key={room} 
-            value={room} 
-            selected={(room.localeCompare(state.currentChat) === 0)}
+            key={roomObj.room} 
+            value={roomObj.room} 
+            //unAcked={roomObj.unAcked}
+            selected={(roomObj.room.localeCompare(state.currentChat) === 0)}
         />
     ));
 

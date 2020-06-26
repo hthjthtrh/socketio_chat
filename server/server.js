@@ -38,7 +38,7 @@ const createRoom = (uid, room) => {
 
 io.on('connection', socket => {
     socket.on('login', async (credentials, ack) => {
-        console.log(credentials);
+        //console.log(credentials);
         const uid = credentials.userName
         if (!(verify(credentials)) || activeUsers.has(uid)) {
             ack('failure')
@@ -93,7 +93,7 @@ io.on('connection', socket => {
     socket.on('message', msg => {
         const uid = SidToUid[socket.id]
         msg.origin = uid
-        console.log(msg);
+        //console.log(msg);
         storage.insertDocuments('messages', [msg])
         socket.to(msg.room).emit('message', msg)
     })

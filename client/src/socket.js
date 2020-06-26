@@ -13,7 +13,6 @@ try {
 };
 
 socket.on('user joined', joinedUser => {
-    console.log(joinedUser);
 });
 
 socket.on('history', roomHistory => {
@@ -25,7 +24,6 @@ socket.on('history', roomHistory => {
 });
 
 socket.on('message', msg => {
-    console.log(msg);
     store.dispatch({
         type: Types.RECEIVE_MESSAGE,
         payload: msg

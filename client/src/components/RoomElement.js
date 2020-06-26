@@ -8,6 +8,7 @@ const originTransform = (origin, user) => origin.localeCompare(user)? origin : '
 
 export default function RoomElement(props) {
     const room = props.value
+    //const unAcked = props.unAcked
     const roomMsgs = useSelector(state => state.messages[room])
     const user = useSelector(state => state.user)
     var previewContent = null
