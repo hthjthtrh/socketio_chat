@@ -22,10 +22,10 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(1),
   },
   paper1: {
-    height: '30px'
+    height: 56
   },
   paper2: {
-    height: '600px',
+    height: '604px',
     overflowY: 'auto',
   },
   paper3: {
@@ -35,7 +35,8 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     padding: theme.spacing(1),
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    height: 57
   }
 }));
 

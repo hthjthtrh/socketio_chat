@@ -66,7 +66,9 @@ export const sendMessage = msg => (dispatch, getState) => {
         room: currentChat,
         time: Date.now(),
         payload: {
-            _metaData: null,
+            _metaData: {
+                type: 'raw text'
+            },
             data: msg
         }
     }
@@ -77,3 +79,25 @@ export const sendMessage = msg => (dispatch, getState) => {
     })
 }
 
+export const sendFile = file => async (dispatch, getState) => {
+    const { user, currentChat } = getState()
+
+    const msgBody = {
+        origin: user,
+        room: currentChat,
+        time: Date.now(),
+        payload: {
+            _metaData: {
+                type: file.file.type,
+                name: file.file.name,
+                size: file.file.size
+            },
+            data: file.base64
+        }
+    }
+    socket.emit('message', msgBody)
+    dispatch({
+        type: Types.SEND_MESSAGE,
+        payload: msgBody
+    })
+}

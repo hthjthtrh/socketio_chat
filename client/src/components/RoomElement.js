@@ -13,8 +13,13 @@ export default function RoomElement(props) {
     const user = useSelector(state => state.user)
     var previewContent = null
     if (roomMsgs.length > 0) {
-        var {origin} = roomMsgs[roomMsgs.length - 1]        
-        previewContent = originTransform(origin, user) + ': ' + roomMsgs[roomMsgs.length - 1].payload.data
+        var {origin, payload} = roomMsgs[roomMsgs.length - 1]        
+        previewContent = originTransform(origin, user) + ': '
+        if (payload._metaData.type === 'raw text') {
+            previewContent += payload.data
+        } else{
+            previewContent += payload._metaData.name
+        }
     }
 
     const dispatch = useDispatch();
@@ -32,7 +37,7 @@ export default function RoomElement(props) {
         >
             <div style={{ width: 'inherit' }}>
                 <div>
-                    <Typography color='textPrimary' variant='h6'>
+                    <Typography noWrap color='textPrimary' variant='h6'>
                         {room}
                     </Typography>
                 </div>

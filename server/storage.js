@@ -15,7 +15,7 @@ const initDbConnection = (cnntnString, dbName) => {
 const insertDocuments = (collection, documents) => {
     db.collection(collection).insertMany(documents, (error, result) => {
         assert.equal(error, null);
-        console.log(`${result.insertedCount}/${documents.length} documents for collection ${collection} backed up`)
+        //console.log(`${result.insertedCount}/${documents.length} documents for collection ${collection} backed up`)
     })
 }
 

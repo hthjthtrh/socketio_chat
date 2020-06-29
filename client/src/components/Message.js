@@ -2,6 +2,7 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Paper, Typography, Grid } from '@material-ui/core';
 import clsx from 'clsx';
+import MessageContentRender from './MessageContentRender';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -32,11 +33,10 @@ const captionElement = content => {
 
 export default function Message({ rawMsg, left }) {
     const { origin, time, payload } = rawMsg;
-    const { data } = payload;
     const classes = useStyles();
-
+    
     var readableTime = new Date(time);
-    readableTime = `${('0'+readableTime.getHours()).slice(-2)}:${('0'+readableTime.getMinutes()).slice(-2)}`;
+    readableTime = `${('0' + readableTime.getHours()).slice(-2)}:${('0' + readableTime.getMinutes()).slice(-2)}`;
 
     return (
         <Paper className={classes.root}>
@@ -44,15 +44,11 @@ export default function Message({ rawMsg, left }) {
                 {left && <Grid item className={clsx(classes.textBox, classes.leftBox)}>
                     {captionElement(origin)}
                 </Grid>}
-                <Grid item className={clsx(classes.textBox, classes.leftBox)}>
-                    <Typography variant='body1' >
-                        {data}
-                    </Typography>
-                </Grid>
+                <MessageContentRender payload={payload} />
                 <Grid item className={clsx(classes.textBox, classes.rightBox)}>
                     {captionElement(readableTime)}
                 </Grid>
-                
+
             </Grid>
         </Paper>
     );

@@ -23,6 +23,6 @@ export default function LoginPanel() {
     }
 
     return (
-        <TextField value={user} onKeyDown={handleKeyDown} onChange={handleChange} label='Enter your user name' required />
+        <TextField variant='outlined' value={user} onKeyDown={handleKeyDown} onChange={handleChange} label='Enter your user name' required />
     );
 };

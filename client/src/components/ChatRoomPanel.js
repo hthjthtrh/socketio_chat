@@ -26,7 +26,7 @@ export default function ChatRoomPanel(props) {
     return (
         <Grid container justify='space-evenly' direction='column' className={classes.root}>
             <Grid container item >
-                <Paper style={{ height: '600px'}} className={classes.paper} variant='outlined'>
+                <Paper style={{ height: '608px'}} className={classes.paper} variant='outlined'>
                     <ChatMessagesPanel />
                 </Paper>
             </Grid>

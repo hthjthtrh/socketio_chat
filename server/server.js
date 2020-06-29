@@ -67,7 +67,7 @@ io.on('connection', socket => {
             const options = { projection: { _id: 0 }, sort: { time: 1 } }
             storage.retrieveDocuments('messages', criterias, options).then(messages => {
                 socket.emit('history', { ...room, messages })
-            }).catch(err => console.err(err))
+            }).catch(err => console.error(err))
         })
     })
 
@@ -93,7 +93,6 @@ io.on('connection', socket => {
     socket.on('message', msg => {
         const uid = SidToUid[socket.id]
         msg.origin = uid
-        //console.log(msg);
         storage.insertDocuments('messages', [msg])
         socket.to(msg.room).emit('message', msg)
     })

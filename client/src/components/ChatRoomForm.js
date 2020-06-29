@@ -22,13 +22,12 @@ export default function ChatRoomForm(props) {
         if (event.key === 'Enter'){
             event.preventDefault();
             event.stopPropagation();
-            console.log(chatRoom);
             dispatch(joinChat(chatRoom));
             setChatRoom('');
         }
     }
 
     return (
-        <TextField {...props} required placeholder='Join a chat room' onKeyDown={handleKeyDown} onChange={e => setChatRoom(e.target.value)} value={chatRoom}/>
+        <TextField {...props} variant='outlined' required placeholder='Join a chat room' onKeyDown={handleKeyDown} onChange={e => setChatRoom(e.target.value)} value={chatRoom}/>
     );
 }
